@@ -1,0 +1,173 @@
+#!/usr/bin/env bash
+
+## ToDo
+#
+# Replace echo with print
+# Add Specific icons for specific vlues = Done
+# Add support for Beats player
+# Installer script
+## Clickable time, volume, backlight, network
+# Full page for wifi, clock, Custom Messages, music, brightness, volume, battery, stats
+# Allow to refresh in "Hide By Time" mode
+
+
+source config.sh
+[[ ! -e "$TmpFile/Connect" ]] && mkdir -p "$TmpFile" && touch "$TmpFile/Connect"
+TotalMemory="$(free -m | awk '/^Mem/ { print $2 }')"
+TotalSwap="$(free -m | awk '/^Swap/ { print $2 }')"
+
+cpu_() {
+	Cpu="$(cpu-stat)"
+	echo "^b$Red^c$Black  $Rst^c$Red ${Cpu%.*}"
+}
+
+memory_() {
+	UsedMemory="$(free -m | awk '/^Mem/ { print $3 }')"
+	UsedMemory="$(( (UsedMemory*100)/TotalMemory ))"
+	echo "^c$Red•^c$Red $UsedMemory"
+}
+
+battery_() {
+	Battery="$(cat /sys/class/power_supply/BAT0/capacity)"
+	BatteryStatus="$(cat /sys/class/power_supply/BAT0/status)"
+	echo "^b$Orange^c$Black"
+	if [[ $BatteryStatus == "Unknown" ]]; then
+		echo "  "
+	elif [[ $Battery -le 10 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 20 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 30 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 40 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 50 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 60 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 70 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 80 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 90 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	elif [[ $Battery -le 100 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && echo "  " || echo "  "
+	fi
+	echo "$Rst^c$Orange $Battery"
+}
+
+brightness_() {
+	Brightness="$(xbacklight)"
+	Brightness="${Brightness%.*}"
+
+	echo "^b$Green^c$Black"
+
+	if [[ $Brightness -le 25 ]]; then
+		echo "  "
+	elif [[ $Brightness -le 50 ]]; then
+		echo "  "
+	elif [[ $Brightness -le 75 ]]; then
+		echo "  "
+	elif [[ $Brightness -le 100 ]]; then
+		echo "  "
+	fi
+
+	echo "$Rst^c$Green $Brightness"
+
+}
+
+volume_() {
+	Status=$(amixer sget Master | tail -n1 | sed -r "s/.*\[(.*)\]/\1/")
+	Volume=$(amixer get Master | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")
+
+	echo "^b$Yellow^c$Black"
+
+	if [[ "$Status" == "off" ]]; then
+		echo " 婢 "
+	elif [[ $Volume -le 10 ]]; then
+		echo "  "
+	elif [[ $Volume -le 50 ]]; then
+		echo " 墳 "
+	elif [[ $Volume -le 100 ]]; then
+		echo "  "
+	fi
+
+	echo "$Rst^c$Yellow $Volume"
+}
+
+connection_() {
+	case "$(cat /sys/class/net/wl*/operstate 2>/dev/null)" in
+	up) echo "^b$Purple^c$Black 直 $Rst^c$Purple" ;;
+	down) echo "^b$Purple^c$Black 睊 $Rst^c$Purple" ;;
+	esac
+}
+
+clock_() {
+	[[ $1 == '1' ]] && Arg="%H:%M" && echo "^b$Blue^c$Black  $Rst^c$Blue " || Arg=$1
+	echo "$(date "+$Arg")"
+}
+
+#while true; do
+	Temp=0
+	case "$(cat "$TmpFile/Connect")" in
+		'1')
+			Status="^b$Blue^c$Black  $Rst^c$Blue $(clock_ "%A, %d %B %Y") ^b$Blue^c$Black  $Rst^c$Blue $(clock_ "%H:%M:%S")"
+			Temp=1
+			echo "0" >"$TmpFile/Connect"
+			;;
+		'2')
+			Cpu="$(cpu-stat -a)"
+			Temp=0 && Status="" && CpuStat=()
+			for i in $Cpu; do
+				CpuStat+=("$i")
+			done
+			Num=("" "" "" "" "" "" "" "" "", "")
+			Status="^b$Red^c$Black TOTAL $Rst^c$Red ${CpuStat[0]}%$Rst"
+			for (( i=1; i<${#CpuStat[@]}; i++ )); do
+				Status+=" ^b$Yellow^c$Black ${Num[$Temp]} $Rst^c$Yellow ${CpuStat[$i]%.*}%"
+				((Temp++))
+			done
+			Status+=" $(clock_ "1")"
+			Temp=0.1
+			;;
+		'3')
+			case "$(cat /sys/class/net/wl*/operstate 2>/dev/null)" in
+				up) Status="^b$Purple^c$Black 直 $Rst^c$Purple Connected" ;;
+				down) Status="^b$Purple^c$Black 睊 $Rst^c$Purple Disconnected" ;;
+			esac
+
+			WifiName="$(wpa_cli status | grep -w ssid)"
+			WifiName="${WifiName#*=}"
+			Status+=" · $WifiName $(clock_ "1")"
+			Temp=1
+			echo "0" >"$TmpFile/Connect"
+			;;
+		'4')
+			UsedSwap="$(free -m | awk '/^Swap/ { print $3 }')"
+			Status="$TotalSwap/$UsedSwap $TotalMemory/$(memory_)"
+			;;
+		'5')
+			Title="$(cat $TmpFile/MessageTitle)"
+			Status="^b$Orange^c$Black $Title $Rst^c$Orange $(cat $TmpFile/LastMessage)"
+			Temp=2
+			echo "0" >"$TmpFile/Connect"
+			;;
+		*)
+			Status="$(battery_)% $Rst"
+			Status+="$(volume_)% $Rst"
+			Status+="$(brightness_)% $Rst"
+			Status+="$(connection_)$Rst"
+			Status+="$(cpu_)% $Rst"
+			Status+="$(memory_)% $Rst"
+			Status+="$(clock_ "1")$Rst"
+			;;
+	esac
+
+	xsetroot -name "$Status"
+	sleep $RefreshDelay
+	sleep $Temp
+#done
+
+. $HOME/Projects/pagebar/pagebar
+
