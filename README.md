@@ -10,8 +10,7 @@ DWM bar with Pages!
 - [Configuration](#configuration)
 - [Pages](#pages)
   - [Call Pages](#call-pages)
-  - [Installation](#installadftion)
-  - [Configuration](#configuration)
+
 
 ## Installation
 Git-Clone repository.
@@ -54,32 +53,35 @@ Yet there are some variables(predefined) that you can easily edit(also in source
 <details>
   <summary>Preview</summary>
   <br>
-  Default Page(extra-status closed).<br>
+  Default Page(extra-status closed) = [Battery] [Volume] [Brightness] [Stat(cpu*memory)] [Clock]<br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/1.png">
   
-  Default Page(extra-status open)<br>
+  <br>Default Page(extra-status open) = [Wifi] [Battery] [Volume] [Brightness] [Stat(cpu*memory)] [Clock]<br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/2.png">
   
-  Clock Page<br>
+  Clock Page = [Week] [Day] [Month] [Year] [Hours] [Minutes] [Seconds] <br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/3.png">
 
-  Cpu Page<br>
+  Cpu Page = [TotalCpuUsage] [PerCpuUsage] [Clock]<br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/4.png">
 
-  Memory Page<br>
+  Memory Page = [UsedMemory]/[TotalMemory] [MemoryInPercentage] [UsedSwap]/[TotalSwap] [SwapInPercentage] [Clock]<br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/5.png">
 
-  Network Page<br>
+  Network Page = [Status] [WifiName] [Clock]<br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/6.png">
 
-  Battery Page<br>
+  Battery Page = [CurrentBattery]/[TotalBattery] [BatteryInPercentage] [Status] [BatteryHealth] [Clock]<br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/7.png">
 
-  Message Page<br>
+  Message Page = [Title] [Message]<br>
   <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/8.png">
 
-  
-  
 </details>
 
 ### Call Pages
+todo...
+
+## ToDo
+- [ ] (Make a Page for Current Playing Music.)
+- [ ] (Improve Code. Optimization. Reduce Code.)
