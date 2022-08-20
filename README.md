@@ -1,10 +1,12 @@
 # PageBar
 DWM bar with Pages!
 
+<img src="https://github.com/Randomguy-8/PageBar/blob/main/src/9.png">
 
 ## Table Of Contents
 - [Installation](#installation)
 - [Dependency](#dependency)
+- [Conept](#concept)
 - [Configuration](#configuration)
   - [Installation](#installation)
   - [Configuration](#configuration)
@@ -25,6 +27,14 @@ Make scripts executeable.
 Copy **pagebar-(noblocks or blocks)**, **pagebarsig**, **bin/cpu-stat** to */usr/bin*.
 
 `sudo cp bin/cpu-stat pagebar-noblocks pagebarsig /usr/bin/`
+
+## Concept
+There are alot of bar's and bar-scripts available for DWM. PageBar is Just one of them, but with little twist.
+
+PageBar shows all basic stauts like *clock*, *brightness*, *Volume*, and *battery*. But it has **pages**(extra status information) which pop up in place of default status whenever it's called.
+
+Pagebar is inspired by [dwm-bar](https://github.com/joestandring/dwm-bar) and [chadwm](https://github.com/siduck/chadwm)'s bar.
+
 
 ## Dependency
 1) [cpu-stat](https://github.com/vivaladav/cpu-stat)  -  A command line program to get CPU usage statistics on Linux systems.<br>
