@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+#
+# Made By Randomguy (https://github.com/Randomguy-8)
+# Last Modified On Sat 20 Aug 2022 02:34:02 PM IST
+
+
+
+## Root Password(needed to kill wpa_supplicant)
+Password="ilovelinux"
+
+## Night Light
+NLightJump=200
+
+## Wpa_Supplicant
+Interface="wlp1s0"
+WpaConfigFile="/etc/wpa_supplicant/wpa_supplicant.conf"
+
+## Predefines
+Version="22.8.13"
+Usage='usage: pagebarsig [Options]\n  Where Optons are:
+  -incb, -decb <value>\tIncrease or Decrease Brightness
+  -incv, -decv <value>\tIncrease or Decrease Volume\n  -togv\t\t\tToggle Volume on or off
+  -incn, -decn <value>\tIncrease or Decrease Night-light temperature\n  -togn\t\t\tToggle Night-line on or off
+  -togw\t\t\tToggle Wifi
+  -showde\t\tShow Default statusbar page
+  -showfc\t\tShow Full clock on statusbar
+  -showcp\t\tShow CPU Information on statusbar
+  -showme\t\tShow Memory Information on statusbar
+  -showwi\t\tShow WiFi Information on statusbar
+  -showba\t\tShow Battery Information on statusbar
+  -message <Message>\tshow message
+  \t-title\t\tMessage title'
+
+ ## Check
+ConfigDir="$HOME/.config/pagebar"
+OutputFile="$HOME/.config/pagebar/output/output.txt"
+[[ ! -f "$OutputFile" ]] && mkdir -p "${OutputFile%/*}" && touch "$OutputFile"
+[[ ! -e "$TmpFile" ]] && mkdir -p "/tmp/pagebar"
+[[ -z "$1" ]] && echo -e "$Usage" >&2 && exit 64
+
+
+
+case $1 in
+	'-incb')
+		[[ -z $2 ]] && Temp=5 || Temp=$2
+		xbacklight -inc "$Temp" 2>&1>>"$OutputFile"
+		;;
+	'-decb')
+		[[ -z $2 ]] && Temp=5 || Temp=$2
+		xbacklight -dec "$Temp" 2>&1>>"$OutputFile"
+		;;
+	'-incv')
+		[[ -z $2 ]] && Temp=5 || Temp=$2
+		amixer set Master ${Temp}%+ 2>&1>>"$OutputFile"
+
+		;;
+	'-decv')
+		[[ -z $2 ]] && Temp=5 || Temp=$2
+		amixer set Master ${Temp}%- 2>&1>>"$OutputFile"
+		;;
+	'-togv')
+		Status=$(amixer sget Master | tail -n1 | sed -r "s/.*\[(.*)\]/\1/")
+
+		if [[ $Status == "on" ]]; then
+			amixer set Master mute 2>&1 | tail -n1 2>&1>>"$OutputFile"
+		else
+			amixer set Master unmute 2>&1 | tail -n1 2>&1>>"$OutputFile"
+		fi
+		;;
+	'-incn')
+		[[ -e "$TmpFile/redshift-temp" ]] && StartTemp="$(( $(cat "$TmpFile/redshift-temp")+$NLightJump ))" || StartTemp="$2"
+		[[ -z $StartTemp ]] && StartTemp=1000
+		[[ $StartTemp -gt 4500 ]] && StartTemp=4500
+		echo $StartTemp >"$TmpFile/redshift-temp"
+		redshift -P -O $StartTemp 2>&1>>"$OutputFile"
+		;;
+	'-decn')
+		[[ -e "$TmpFile/redshift-temp" ]] && StartTemp="$(( $(cat "$TmpFile/redshift-temp")-$NLightJump ))" || StartTemp="$2"
+		[[ -z $StartTemp ]] && StartTemp=4500 && echo yes
+		[[ $StartTemp -lt 1000 ]] && StartTemp=1000
+		echo $StartTemp >"$TmpFile/redshift-temp"
+		redshift -P -O $StartTemp 2>&1>>"$OutputFile"
+		;;
+	'-togn')
+		redshift -x 2>&1>>"$OutputFile"
+		;;
+	'-togw')
+		[[ ! -z $(ps -e | grep wpa_supplicant) ]] && echo "$Password" | sudo -S pkill "wpa_supplicant" 2>&1>>"$OutputFile"
+		echo "$Password" | sudo -S wpa_supplicant -B -i"$Interface" -c "$WpaConfigFile" 2>&1>>"$OutputFile"
+		;;
+	'-showde')
+		[[ "$(cat "$TmpFile/Connect")" == "0" ]] && Temp="00" || Temp="0"
+		echo "$Temp" >"$TmpFile/Connect"
+		;;
+	'-showfc')
+		echo "1" >"$TmpFile/Connect"
+		;;
+	'-showcp')
+		echo "2" >"$TmpFile/Connect"
+		;;
+	'-showwi')
+		echo "3" >"$TmpFile/Connect"
+		;;
+	'-showme')
+		echo "4" >"$TmpFile/Connect"
+		;;
+	'-showba')
+		echo "5" >"$TmpFile/Connect"
+		;;
+	'-message')
+		[[ ! -z "$2" ]] && echo "$2" >"$TmpFile/Message"
+		[[ $3 == "-title" ]] && echo "$4" >"$TmpFile/Title"
+		echo "6" >"$TmpFile/Connect"
+		;;
+	*)
+		echo "Invalid argument $1"
+		echo -e "$Usage" >&2
+		exit 64
+		;;
+esac

@@ -1,0 +1,197 @@
+#!/usr/bin/env bash
+#
+# Made By Randomguy (https://github.com/Randomguy-8)
+# Last Modified On Sat 20 Aug 2022 02:33:43 PM IST
+
+
+
+## Colors
+Black="#2E3440^"
+White="#D8DEE9^"
+Blue="#88C0D0^"
+Red="#BF616A^"
+Orange="#D08770^"
+Yellow="#EBCB8B^"
+Green="#A3BE8C^"
+Purple="#B48EAD^"
+Rst="^d^" ## Reset Color(Don't Change)
+
+TmpFile="/tmp/pagebar"
+[[ ! -e "$TmpFile/Connect" || -z "$(cat "$TmpFile/Connect")" ]] && mkdir -p "$TmpFile" && echo "0" >"$TmpFile/Connect"
+TMem="$(free -m | awk '/^Mem/ { print $2 }')"
+TSwap="$(free -m | awk '/^Swap/ { print $2 }')"
+Num=("" "" "" "" "" "" "" "" "", "")
+
+
+
+cpu_() {
+	if [[ -z $1 ]]; then
+		Cpu="$(cpu-stat)"
+		printf "^c$Red  $Rst${Cpu%.*}"
+	else
+		Cpu="$(cpu-stat -a)"
+		Temp=0
+		for i in $Cpu; do
+			CpuStat+=("$i")
+		done
+
+		printf "^c$Red TOTAL $Rst ${CpuStat[0]}%%$Rst"
+		for (( i=1; i<${#CpuStat[@]}; i++ )); do
+			Cpu="${CpuStat[$i]%.*}"
+			printf " ^c$Yellow ${Num[$Temp]} $Rst%0*d%%" 2 $Cpu
+			((Temp++))
+		done
+	fi
+}
+
+memory_() {
+	MemList="$(free -m)"
+	UMem="$(printf "$MemList" | awk '/^Mem/ {print $3}')"
+	UMemP="$(( (UMem*100)/TMem ))"
+	USwap="$(printf "$MemList" | awk '/^Swap/ { print $3 }')"
+	USwapP="$(( (USwap*100)/TSwap ))"
+	[[ $1 -eq 1 ]] && printf "^c$Red﬙$Rst $UMem/$TMem ($UMemP%%) \
+	^c$Red SWAP $Rst$USwap/$TSwap ($USwapP%%)" || printf "•$UMemP%%"
+}
+
+battery_() {
+	Battery="$(cat /sys/class/power_supply/BAT0/charge_now)"
+	BatteryP="$(cat /sys/class/power_supply/BAT0/capacity)"
+	BatteryStatus="$(cat /sys/class/power_supply/BAT0/status)"
+	NowCapacity="$(cat /sys/class/power_supply/BAT0/charge_full)"
+	FacCapacity="$(cat /sys/class/power_supply/BAT0/charge_full_design)"
+
+	printf "^c$Orange"
+	if [[ $BatteryStatus == "Unknown" ]]; then
+		printf "  "
+	elif [[ $BatteryP -le 10 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 20 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 30 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 40 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 50 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 60 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 70 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 80 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 90 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	elif [[ $BatteryP -le 100 ]]; then
+		[[ $BatteryStatus == "Charging" ]] && printf "  " || printf "  "
+	fi
+
+	[[ $1 -eq 1 ]] && printf "$Rst%.5s/%.5s ($BatteryP%%) ^c$Orange  $Rst$BatteryStatus \
+	^c$Orange  $Rst$(( (NowCapacity*100)/$FacCapacity ))%%" $Battery $NowCapacity || printf "$Rst$BatteryP"
+}
+
+brightness_() {
+	Brightness="$(xbacklight)"
+	Brightness="${Brightness%.*}"
+
+	printf "^c$Green"
+
+	if [[ $Brightness -le 25 ]]; then
+		printf "  "
+	elif [[ $Brightness -le 50 ]]; then
+		printf "  "
+	elif [[ $Brightness -le 75 ]]; then
+		printf "  "
+	elif [[ $Brightness -le 100 ]]; then
+		printf "  "
+	fi
+
+	printf "$Rst$Brightness"
+}
+
+volume_() {
+	Status=$(amixer get Master)
+	Volume=$(echo "$Status" | tail -n1 | sed -r "s/.*\[(.*)%\].*/\1/")
+	Status="$(echo "$Status" | tail -n1 | sed -r "s/.*\[(.*)\]/\1/")"
+	printf "^c$Yellow"
+
+	if [[ "$Status" == "off" ]]; then
+		printf " 婢 "
+	elif [[ $Volume -le 10 ]]; then
+		printf "  "
+	elif [[ $Volume -le 50 ]]; then
+		printf " 墳 "
+	elif [[ $Volume -le 100 ]]; then
+		printf "  "
+	fi
+
+	printf "$Rst$Volume"
+}
+
+connection_() {
+	case "$(cat /sys/class/net/wl*/operstate)" in
+		'up')
+			printf "^c$Purple 直 $Rst"
+			[[ $1 -eq 1 ]] && printf " Connected"
+			;;
+		'down')
+			printf "^c$Purple 睊 $Rst"
+			[[ $1 -eq 1 ]] && printf " Disconnected"
+			;;
+	esac
+	if [[ $1 -eq 1 ]]; then
+		WifiName="$(wpa_cli status | grep -w ssid)"
+		printf " · ${WifiName#*=}"
+	fi
+}
+
+clock_() {
+	[[ -z $1 ]] && Arg="%H:%M" && printf "^c$Blue  $Rst" || Arg=$1
+	printf "$(date "+$Arg")"
+}
+
+hidden_status_(){
+	Status+="$(connection_)$Rst"
+}
+
+
+
+while true; do
+	case "$(cat "$TmpFile/Connect")" in
+		'0' | '00' )
+			Status=""
+			[[ "$(cat "$TmpFile/Connect")" == "00" ]] && Indica="" && hidden_status_ || Indica=" "
+			Status+="$Indica$(battery_)% $Rst"
+			Status+="$(volume_)% $Rst"
+			Status+="$(brightness_)% $Rst"
+			Status+="$(cpu_)%$Rst"
+			Status+="$(memory_) $Rst"
+			Status+="$(clock_)$Rst"
+			;;
+		'1')
+			Status="^c$Blue  $Rst $(clock_ "%A, %d %B %Y") ^c$Blue  $Rst$(clock_ "%H:%M:%S")"
+			;;
+		'2')
+			Status="$(cpu_ 1) $(clock_)"
+			;;
+		'3')
+			Status="$(connection_ 1) $(clock_)"
+			;;
+		'4')
+			Status="$(memory_ 1) $(clock_)"
+			;;
+		'5')
+			Status="$(battery_ 1) $(clock_)"
+			;;
+		'6')
+			Title="$(cat "$TmpFile/Title" 2>/dev/null)"
+			Message="$(cat "$TmpFile/Message" 2>/dev/null)"
+			[[ -z "$Title" ]] && Title=""
+			[[ -z "$Message" ]] && Message="NO MESSAGE!"
+			Status="^c$Orange$Title$Rst $Message"
+			;;
+	esac
+
+	xsetroot -name "$Status"
+	sleep 0.5
+done
