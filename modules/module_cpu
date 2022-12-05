@@ -1,0 +1,10 @@
+## Module: Fetch Cpu Usage, Total and Individual.
+## Dependancies: cpu-stat
+
+Cpu_(){
+	local CpuStat="$(cpu-stat -a)"
+	unset Cpu
+	for i in $CpuStat; do Cpu+=("$i"); done
+	CpuGov="$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)" # Decide from Cpu 0 only
+}
+

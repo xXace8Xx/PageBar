@@ -1,0 +1,12 @@
+functions_(){
+	Memory_
+}
+
+page_(){
+	SwapPerc="$(( ($SwapAvai*100)/$SwapTot ))"
+	MemPerc="$(( ($MemAvai*100)/$MemTot ))"
+
+	Status="Mem: ${MemPerc}%($MemAvai/$MemTot)MB  Swap: ${SwapPerc}%($SwapAvai/$SwapTot)MB"
+}
+
+Update=2

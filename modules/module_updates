@@ -1,0 +1,8 @@
+## Module: Fetch available System updates.
+
+## Dependancies: xbps
+Updates_xbps_(){
+	# Void Linux
+	Updates="$(xbps-install -un 2>/dev/null | wc -l)"
+	[[ -z "$Updates" ]] && Updates=0
+}

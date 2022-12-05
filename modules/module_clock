@@ -1,0 +1,7 @@
+## Module: Fetch current Time
+
+Clock_(){    # $1 = Time Format
+	local Arg="$1"
+	[[ -z "$Arg" ]] && Arg='%H:%M'
+	Clock=$(date "+$Arg")
+}

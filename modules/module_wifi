@@ -1,0 +1,20 @@
+## Module: Fetch Wifi State and Connectivity.
+## Dependancies: wpa_cli
+
+Wifi_(){
+	local Temp="$(wpa_cli status 2>/dev/null)"
+
+	Wifi="$(cat /sys/class/net/wl*/operstate)"
+
+	WifiName="$(printf "$Temp" | grep -w ssid)"
+	WifiName="${WifiName#*=}"
+	WifiName="${WifiName:-"Not Connected!"}"
+
+	WifiState="$(printf "$Temp" | grep -w wpa_state)"
+	WifiState="${WifiState#*=}"
+	case "$WifiState" in
+		"COM"*) WifiState="Connected"    ;;
+		"SCA"*) WifiState="Scanning"     ;;
+		*)      WifiState="Disconnected" ;;
+	esac
+}

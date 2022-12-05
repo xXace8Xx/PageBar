@@ -1,0 +1,14 @@
+## Module: Fetch Ram {Total, Used}, Swap {Total, Used}.
+## Dependency: free
+
+
+# Total Ram, Swap.
+MemTot="$(free -m | awk '/^Mem/ { print $2 }')"
+SwapTot="$(free -m | awk '/^Swap/ { print $2 }')"
+
+Memory_(){
+	local free_="$(free -m)"
+
+	MemAvai="$(printf "$free_" | awk '/^Mem/ {print $3}')"                    # Ram in MegaByte
+	SwapAvai="$(printf "$free_" | awk '/^Swap/ { print $3 }')"                # Swap in MegaByte
+}

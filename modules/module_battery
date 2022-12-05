@@ -1,0 +1,9 @@
+## Module: Fetch Battery level(%), Status, At-time Capacity, Factory Capacity. Currrent
+
+Battery_(){
+	Battery[0]="$(cat /sys/class/power_supply/BAT0/charge_now)"		# Battery in Watt
+	Battery[1]="$(cat /sys/class/power_supply/BAT0/capacity)"		# Battery in Percentage
+	Battery[2]="$(cat /sys/class/power_supply/BAT0/status)"			# Battery Status(Charging or Discharging)
+	Battery[3]="$(cat /sys/class/power_supply/BAT0/charge_full)"		# Current charge holding capacity
+	Battery[4]="$(cat /sys/class/power_supply/BAT0/charge_full_design)"	# Factory charge holding capacity
+}

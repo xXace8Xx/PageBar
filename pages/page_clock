@@ -1,0 +1,10 @@
+functions_(){
+	## Functions		Skips			Modules
+	func_skip_		1			Clock_ "%A, %d %B %Y  %H:%M:%S"
+}
+
+page_(){
+	Status="$Clock"
+}
+
+Update=1

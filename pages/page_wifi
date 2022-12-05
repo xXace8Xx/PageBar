@@ -1,0 +1,10 @@
+functions_(){
+	## Modules
+	Wifi_
+}
+
+page_(){
+	Status="Wifi: $WifiState - $WifiName"
+}
+
+Update=2

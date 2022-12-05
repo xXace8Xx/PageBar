@@ -1,0 +1,7 @@
+## Module: Fetch brightness level
+## Dependancies: xbacklight
+
+Brightness_(){
+	Brightness="$(xbacklight)"
+	Brightness="${Brightness%.*}"
+}

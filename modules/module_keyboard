@@ -1,0 +1,8 @@
+## Module: Fetch current keyboard layout.
+## Dependancies: setxkbmap
+
+
+Keyboard_(){
+        KeyboardLayout="$(setxkbmap -query | awk '/layout/{print $2}')"
+        KeyboardModel="$(setxkbmap -query | awk '/model/{print $2}')"
+}

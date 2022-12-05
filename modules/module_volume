@@ -1,0 +1,33 @@
+## Module: Fetch volume percentage and Status
+
+## Dependancies: alsa-utils
+Volume_Alsa_(){
+	local Vol=$(amixer get Master | tail -n1)
+
+	VolumePerc="$(echo "$Vol"  | sed -r "s/.*\[(.*)%\].*/\1/")"
+
+	VolumeState="$(echo "$Vol" | sed -r "s/.*\[(.*)\]/\1/")"
+	case "$VolumeState" in
+		"off")
+			VolumeState="Mute"
+			;;
+		*)
+			VolumeState="UnMute"
+			;;
+	esac
+}
+
+## Dependancies: pamixer
+Volume_Pulse_(){
+	VolumePerc="$(pamixer --get-volume)"
+
+	VolumeState="$(pamixer --get-mute)"
+	case "$VolumeState" in
+		"true")
+			VolumeState="Mute"
+			;;
+		*)
+			VolumeState="UnMute"
+			;;
+	esac
+}

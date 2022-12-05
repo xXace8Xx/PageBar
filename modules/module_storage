@@ -1,0 +1,9 @@
+## Module: Fetch Total and Availabe Storage
+## Dependancies: df
+
+Storage_(){
+	local Temp="$(df -h $df_check_location | tail -n 1)"
+	Storage[0]="$(echo "$Temp" | awk '{print $3}')"
+	Storage[1]="$(echo "$Temp" | awk '{print $2}')"
+	Storage[2]="$(echo "$Temp" | awk '{print $5}')"
+}

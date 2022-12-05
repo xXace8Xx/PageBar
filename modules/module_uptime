@@ -1,0 +1,13 @@
+## Module: Fetch UpTime of System.
+
+Uptime_(){
+	unset UpTime
+	local Temp="$(cat /proc/uptime)"
+
+	UpTime[0]="${Temp%%.*}"
+	UpTime[1]="$((${UpTime[0]}/3600))"
+	UpTime[2]="$(( (${UpTime[0]}%3600)/60 ))"
+	UpTime[3]="$(( (${UpTime[0]}%3600)%60 ))"
+
+	[[ "${UpTime[2]}" -eq 0 ]] && UpTime[2]="60"
+}

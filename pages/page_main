@@ -1,0 +1,31 @@
+functions_(){
+	## Functions		Skips			Modules
+	func_skip_		10			Battery_
+	func_skip_		5			Uptime_
+
+	## Modules
+	Volume_Alsa_
+	#Volume_Pulse_
+	Brightness_
+	Clock_
+}
+
+
+page_(){
+	## Battery
+	Status+="Batt: ${Battery[1]}% | "
+
+	## Volume
+	Status+="Vol: $VolumePerc% | "
+
+	## Brightness
+	Status+="B: ${Brightness}% | "
+
+	## System UpTime
+	Status+="Up: ${UpTime[1]}h:${UpTime[2]}m | "
+
+	## Time
+	Status+="$Clock"
+}
+
+Update=4

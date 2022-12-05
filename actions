@@ -1,0 +1,14 @@
+action_(){
+	if [[ "${Battery[2]}" == "D"* ]]; then
+		case "${Battery[1]}-$Notify" in
+			"12-0"|"11-0"|"10-0"|[4-9]"-0" )
+				Notify=1
+				notify-send " Battery Low! ${Battery[1]}%" -u normal
+				;;
+			[4-0]"-"*) sudo halt ;;
+		esac
+	else
+		Notify=0
+	fi
+}
+

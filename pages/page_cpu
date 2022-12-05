@@ -1,0 +1,18 @@
+functions_(){
+	## Modules
+	Cpu_
+}
+
+page_(){
+	Num=(":1" ":2" ":3" ":4" ":6" ":7" ":8" ":9" ":10")
+
+	## Total
+	Status+="Total: ${Cpu[0]}%  Cpu:"
+
+	## Per CPU
+	for (( i=1; i<${#Cpu[@]}; i++ )); do
+		Status+=" [$(printf "%2b%%" "${Cpu[$i]%.*}")${Num[$((i-1))]:-":$i"}]"
+	done
+}
+
+Update=1
