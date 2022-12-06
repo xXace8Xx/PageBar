@@ -3,8 +3,8 @@ DWM bar with Pages!
 
 <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/pagebar.gif">
 
-**The status is changing on command.* <br>
-**Other imgs are available inside ```src/```*
+**These status are changing on demand.* <br>
+**Related imgs are available inside ```src/```*
 
 ## Table Of Contents
 - [Installation](#installation)
@@ -41,7 +41,7 @@ And if you choose not to see that module again will you reconfigure your script 
 It lets you See all your important modules on your first page and remaing on other pages(shorted by the more frequently they are needed).
 
 ## Dependency
-1) [cpu-stat](https://github.com/vivaladav/cpu-stat)  -  A command line program to get CPU usage statistics(present as binary inside *PageBar/bin/*).<br>
+1) [cpu-stat](https://github.com/vivaladav/cpu-stat)  -  A command line program to get CPU usage statistics(present as executable binary inside *PageBar/bin/*).<br>
 
 ## Configuration
 Most of Configurations can be done via editing the source code.<br>
@@ -103,6 +103,7 @@ Page_Name+=("$HOME/PageBar/pages/page_main")
 Page_Name+=("$HOME/PageBar/pages/page_clock")
 Page_Name+=("$HOME/PageBar/pages/page_custom")
 ...
+now you can call your custom page from anywhere using ```pagebar.sh```.
 ```
 </details>
 
@@ -120,7 +121,7 @@ $ ./pagebar.sh {location-of-custom-page}
 
 <details>
   <summary>Reference</summary>
-Todo...
+Todo...(Module are yet to be completed.)
 
 </details>
 
@@ -130,9 +131,9 @@ Add tese keybinding inside ```key[]``` function of your dwm `config.h` file.
 static Key keys[] = {
 ...
   /* Custom Bar Functions */
-  { MODKEY,        XK_F1,        spawn,        SHCMD("./$HOME/PageBar/pagebar -p")},        // Previous Page
-  { MODKEY,        XK_F2,        spawn,        SHCMD("./$HOME/PageBar/pagebar -n")},        // next Page
-  { MODKEY,        XK_F3,        spawn,        SHCMD("./$HOME/PageBar/pagebar -r")},        // Refresh
+  { MODKEY,        XK_F1,        spawn,        SHCMD("./$HOME/PageBar/pagebar.sh -p")},        // Previous Page
+  { MODKEY,        XK_F2,        spawn,        SHCMD("./$HOME/PageBar/pagebar.sh -n")},        // next Page
+  { MODKEY,        XK_F3,        spawn,        SHCMD("./$HOME/PageBar/pagebar.sh -r")},        // Refresh
 ...
 }
 ```
