@@ -3,7 +3,6 @@ DWM bar with Pages!
 
 <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/pagebar.gif">
 
-**These status are changing on demand.* <br>
 **Related imgs are available inside ```src/```*
 
 ## Table Of Contents
@@ -32,11 +31,6 @@ chmod 777 pagebar.sh
 
 ## Concept
 There are alot of bar-scripts available for [DWM](dwm.suckless.org/). PageBar is Just one of them, but with little twist.
-
-Let me explain it with a story:<br>
-you have a well configured bar-script but you need a module inside bar which you use frequently but not on daily basis.
-in such case will you reconfigure your bar-script with that particular modules and make your bar messy.
-And if you choose not to see that module again will you reconfigure your script again? So why not use Pagebar instead.<br>
 
 It lets you See all your important modules on your first page and remaing on other pages(shorted by the more frequently they are needed).
 
