@@ -39,6 +39,8 @@ There are alot of bar-scripts available for [DWM](dwm.suckless.org/). PageBar is
 
 ## Configuration
 
+> Quick Reference: Pages here refers to individual files in ```page/```directory. Eaxh file is a collection of different modules to show on screen.
+
 ### Refresh Rate
 Refresh rate can be defined Individualy in evey Page by setting variable `UPDATE=<int-num>` anywhere outside the `page_(){...}` function.
 eg:-
