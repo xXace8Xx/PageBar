@@ -32,12 +32,10 @@ chmod 777 pagebar.sh
 ```
 
 ## Concept
-There are alot of bar-scripts available for [DWM](dwm.suckless.org/). PageBar is Just one of them, but with little twist.
+There are alot of bar-scripts available for [DWM](dwm.suckless.org/). PageBar is Just one of them, but unlike other dwm-bar scripts that are static in terns of modules they show, Pagebar can dynamically change the modules it displays with few added keybindings of DWM.
 
-It lets you See all your important modules on your first page and remaing on other pages(shorted by the more frequently they are needed).
-
-## Dependency
-1) [cpu-stat](https://github.com/vivaladav/cpu-stat)  -  A command line program to get CPU usage statistics(present as executable binary inside *PageBar/bin/*).<br>
+# Dependency
+1) [cpu-stat](https://github.com/vivaladav/cpu-stat)  
 
 ## Configuration
 Most of Configurations can be done via editing the source code.<br>
