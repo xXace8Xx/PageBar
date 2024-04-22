@@ -38,7 +38,6 @@ There are alot of bar-scripts available for [DWM](dwm.suckless.org/). PageBar is
 1) [cpu-stat](https://github.com/vivaladav/cpu-stat)  
 
 ## Configuration
-Most of Configurations can be done via editing the source code.<br>
 
 ### Refresh Rate
 Refresh rate can be defined Individualy in evey Page by setting variable `UPDATE=<int-num>` anywhere outside the `page_(){...}` function.
