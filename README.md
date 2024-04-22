@@ -3,7 +3,9 @@ DWM bar with Pages!
 
 <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/pagebar.gif">
 
-**Related imgs are available inside ```src/```*
+**Bar content is changing dynamically*
+
+>More imgs are available inside ```src/```
 
 ## Table Of Contents
 - [Installation](#installation)
