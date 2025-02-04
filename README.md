@@ -1,5 +1,5 @@
 # PageBar
-DWM bar with Pages!
+Change Bar content Dynamically!
 
 <img src="https://github.com/Randomguy-8/PageBar/blob/main/src/pagebar.gif">
 
